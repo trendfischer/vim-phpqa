@@ -51,6 +51,16 @@ if !exists("g:phpqa_codesniffer_args")
     let g:phpqa_codesniffer_args=""
 endif
 
+" PHPCBF binary (PHP_CodeSnifferFixer)
+if !exists("g:phpqa_codesnifferfixer_cmd")
+    let g:phpqa_codesnifferfixer_cmd='phpcbf'
+endif
+
+" Arguments to pass to code sniffer fixer, e.g standard name
+if !exists("g:phpqa_codesnifferfixer_args")
+    let g:phpqa_codesnifferfixer_args=""
+endif
+
 " PHPMD binary (mess detector)
 if !exists("g:phpqa_messdetector_cmd")
     let g:phpqa_messdetector_cmd='phpmd'
