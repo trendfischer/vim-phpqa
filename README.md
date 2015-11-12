@@ -29,7 +29,8 @@ You can also run each command separately on demand:
 
 - `:Php` - check for syntax errors
 - `:Phpcs` - run code sniffer
-- `:Phpmd` - run mess detector (will ask for a rule XML file if not set) 
+- `:Phpcbf` - run code sniffer fixer (will open the fixes in a diff)
+- `:Phpmd` - run mess detector (will ask for a rule XML file if not set)
 - `:Phpcc` - show code coverage (will ask for a clover XML file if not set)
 
 ### Code Coverage
@@ -59,7 +60,7 @@ If you aren't using vundle, you will have to extract the files in each folder to
 
 Each command has it's own configuration settings, which allow you to get the functionality you want.
 
-#### PHP, Mess Detector and Codesniffer
+#### PHP, Mess Detector, Codesniffer, CodesnifferFixer
 
 PHP mess detector needs a ruleset XML file (see the [mess detector website][2] for more information) to run, which you will be prompted for the first time the command runs. However, it's much easier to just specify it in your *.vimrc* file:
 
@@ -74,6 +75,13 @@ For PHP code sniffer, you can pass arguments to the command line binary (run `ph
 let g:phpqa_codesniffer_args = "--standard=Zend"
 ```
 
+For PHP code sniffer fixer, you can pass arguments to the command line binary (run `phpcbf --help` to see a list). For example:
+
+```vim
+" Set the codesnifferfixer args
+let g:phpqa_codesnifferfixer_args = "--standard=Zend"
+```
+
 However, **don't** set the `--report=` argument, as it won't work!
 
 For all the commands, you can override the executable:
@@ -85,10 +93,13 @@ let g:phpqa_php_cmd='/path/to/php'
 " PHP Code Sniffer binary (default = "phpcs")
 let g:phpqa_codesniffer_cmd='/path/to/phpcs'
 
+" PHP Code Sniffer Fixer binary (default = "phpcbf")
+let g:phpqa_codesnifferfixer_cmd='/path/to/phpcbf'
+
 " PHP Mess Detector binary (default = "phpmd")
 let g:phpqa_messdetector_cmd='/path/to/phpmd'
 ```
-However, you don't need to do this if the commands `php`, `phpcs` and `phpmd` are can be found in your `$PATH` environment variable.
+However, you don't need to do this if the commands `php`, `phpcs`, `phpcbf` and `phpmd` are can be found in your `$PATH` environment variable.
 
 And you can stop them running automatically:
 
@@ -98,6 +109,9 @@ let g:phpqa_messdetector_autorun = 0
 
 " Don't run codesniffer on save (default = 1)
 let g:phpqa_codesniffer_autorun = 0
+
+" Don't run codesnifferfixer on save (default = 1)
+let g:phpqa_codesnifferfixer_autorun = 0
 
 " Show code coverage on load (default = 0)
 let g:phpqa_codecoverage_autorun = 1
