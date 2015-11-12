@@ -111,7 +111,7 @@ function! PhpqaRunAll()
         " Check syntax valid before running others
         let retval=Phpqa#PhpLint()
         if 0 == retval && 1 == g:phpqa_run_on_write
-            call Phpqa#PhpQaTools(g:phpqa_codesniffer_autorun,g:phpqa_messdetector_autorun)
+            call Phpqa#PhpQaTools(g:phpqa_codesniffer_autorun,g:phpqa_codesnifferfixer_autorun,g:phpqa_messdetector_autorun)
         endif
     endif
 endf
@@ -140,8 +140,9 @@ endif
 
 " Allow each command to be called individually
 command Php call Phpqa#PhpLint()
-command Phpcs call Phpqa#PhpQaTools(1,0)
-command Phpmd call Phpqa#PhpQaTools(0,1)
+command Phpcs call Phpqa#PhpQaTools(1,0,0)
+command Phpcbf call Phpqa#PhpQaTools(0,1,0)
+command Phpmd call Phpqa#PhpQaTools(0,0,1)
 command Phpcc call Phpqa#PhpCodeCoverage()
 
 

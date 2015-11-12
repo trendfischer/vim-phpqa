@@ -135,6 +135,35 @@ function! Phpqa#PhpCodeSniffer()
     return l:phpcs_list
 endf
 
+" Run PHP code sniffer fixer.
+function! Phpqa#PhpCodeSnifferFixer()
+    if @% == ""
+        echohl Error | echo "Invalid buffer (are you in the error window?)" |echohl None
+    endif
+    " Run codesniffer fixer if the command hasn't been unset
+    if 0 != len(g:phpqa_codesnifferfixer_cmd)
+
+        let command = g:phpqa_codesnifferfixer_cmd.' '.g:phpqa_codesnifferfixer_args.' --no-patch'
+
+        " clear screen
+        silent !clear
+        
+        " Make a copy of the current buffer and hit it with phpcbf.
+        let copy = !tempname()
+        exec 'w!' copy
+        call system(command . ' ' . copy)
+        " Open the Fixed and Beautified copy in diff mode. Let me see the code even
+        " when I have pulled in changes.
+        exec 'vertical diffsplit' copy
+        wincmd p
+        setlocal foldlevel=1
+
+		" avoid hiting ENTER 		
+        redraw!
+	endif
+endf
+
+
 " Run mess detector.
 "
 " The user is required to specify a ruleset XML file if they haven't already.
@@ -160,7 +189,7 @@ function! Phpqa#PhpMessDetector()
 endf
 
 " Run Code Sniffer and Mess Detector.
-function! Phpqa#PhpQaTools(runcs,runmd)
+function! Phpqa#PhpQaTools(runcs,runcbf,runmd)
     let l:bufNo = bufnr('%')
     call s:RemoveSigns()
 
@@ -168,13 +197,17 @@ function! Phpqa#PhpQaTools(runcs,runmd)
         let l:phpcs_list=Phpqa#PhpCodeSniffer()
     else
         let l:phpcs_list = []
+	endif
+
+	if 1 == a:runcbf
+        call Phpqa#PhpCodeSnifferFixer()
     endif
 
     if 1 == a:runmd
         let l:phpmd_list = Phpqa#PhpMessDetector()
     else
         let l:phpmd_list = []
-    endif
+	endif
 
     let error_list=s:CombineLists(l:phpcs_list,l:phpmd_list)
     if 0 != len(error_list)
