@@ -90,7 +90,7 @@ function! Phpqa#PhpLint()
         if 0 != len(g:phpqa_php_cmd)
             let l:bufNo = bufnr('%')
             call s:RemoveSigns()
-            let l:php_output=system(g:phpqa_php_cmd." -l ".@%." 1>/dev/null")
+            let l:php_output=system(g:phpqa_php_cmd." -l ".@%)
             let l:php_list=split(l:php_output, "\n")
 
             if 0 != v:shell_error && match(l:php_list[0],"No syntax errors") == -1
