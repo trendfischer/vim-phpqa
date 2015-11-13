@@ -149,8 +149,8 @@ function! Phpqa#PhpCodeSnifferFixer()
         silent !clear
         
         " Make a copy of the current buffer and hit it with phpcbf.
-        let copy = !tempname()
-        exec 'w!' copy
+        let copy = tempname()
+        exec 'w' copy
         call system(command . ' ' . copy)
         " Open the Fixed and Beautified copy in diff mode. Let me see the code even
         " when I have pulled in changes.
