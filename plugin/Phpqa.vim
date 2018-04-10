@@ -86,7 +86,7 @@ endif
 " Whether to show signs for covered code (or only not covered)
 " It may speed things up to turn this off
 if !exists("g:phpqa_codecoverage_regex")
-    let g:phpqa_codecoverage_showcovered = 1
+    let g:phpqa_codecoverage_regex = 1
 endif
 
 " Whether to automatically run codesniffer when saving a file
