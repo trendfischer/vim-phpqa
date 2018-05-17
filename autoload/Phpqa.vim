@@ -90,7 +90,7 @@ function! Phpqa#PhpLint()
         if 0 != len(g:phpqa_php_cmd)
             let l:bufNo = bufnr('%')
             call s:RemoveSigns()
-            let l:php_output=system(g:phpqa_php_cmd." -l ".@%)
+            let l:php_output=system(g:phpqa_php_cmd." -l ".expand("%:p"))
             let l:php_list=split(l:php_output, "\n")
 
             if 0 != v:shell_error && !empty(l:php_list) && match(l:php_list[0],"No syntax errors") == -1
@@ -124,7 +124,7 @@ function! Phpqa#PhpCodeSniffer()
     endif
     " Run codesniffer if the command hasn't been unset
     if 0 != len(g:phpqa_codesniffer_cmd)
-        let l:phpcs_output=system(g:phpqa_codesniffer_cmd." ".g:phpqa_codesniffer_args." --report=emacs ".@%)
+        let l:phpcs_output=system(g:phpqa_codesniffer_cmd." ".g:phpqa_codesniffer_args." --report=emacs ".expand("%:p"))
         let l:phpcs_list=split(l:phpcs_output, "\n")
     else
         let l:phpcs_list = []
@@ -134,7 +134,6 @@ function! Phpqa#PhpCodeSniffer()
     endif
     return l:phpcs_list
 endf
-
 " Run PHP code sniffer fixer.
 function! Phpqa#PhpCodeSnifferFixer()
     if @% == ""
@@ -163,7 +162,6 @@ function! Phpqa#PhpCodeSnifferFixer()
 	endif
 endf
 
-
 " Run mess detector.
 "
 " The user is required to specify a ruleset XML file if they haven't already.
@@ -179,7 +177,7 @@ function! Phpqa#PhpMessDetector()
             let file_tmp = input("Please specify a mess detector ruleset file, or built in rule: ",file_tmp)
             let g:phpqa_messdetector_ruleset = file_tmp
         endwhile
-        let l:phpmd_output=system(g:phpqa_messdetector_cmd." ".@%." text ".g:phpqa_messdetector_ruleset)
+        let l:phpmd_output=system(g:phpqa_messdetector_cmd." ".expand("%:p")." text ".g:phpqa_messdetector_ruleset)
         let l:phpmd_list=split(l:phpmd_output, "\n")
     else
         let l:phpmd_list = []
@@ -207,7 +205,7 @@ function! Phpqa#PhpQaTools(runcs,runcbf,runmd)
         let l:phpmd_list = Phpqa#PhpMessDetector()
     else
         let l:phpmd_list = []
-	endif
+    endif
 
     let error_list=s:CombineLists(l:phpcs_list,l:phpmd_list)
     if 0 != len(error_list)
