@@ -29,12 +29,8 @@ if 0 == has("signs")
 endif
 
 let $CUR_DIRECTORY=expand("<sfile>:p:h")
-if 1 == has('python3')
-	source $CUR_DIRECTORY/python/codecoverage_py3.vim
-else
-	if 1 == has('python')
-		source $CUR_DIRECTORY/python/codecoverage.vim
-	endif
+if 1 == has('python') || 1 == has('python3')
+    source $CUR_DIRECTORY/python/codecoverage.vim
 endif
 
 let g:phpqa_check = 1
