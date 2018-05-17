@@ -63,6 +63,11 @@ if !exists("g:phpqa_codesnifferfixer_args")
     let g:phpqa_codesnifferfixer_args=""
 endif
 
+" Whether to automatically fix code on file save
+if !exists("g:phpqa_codesnifferfixer_autorun")
+    let g:phpqa_codesnifferfixer_autorun = 0
+endif
+
 " PHPMD binary (mess detector)
 if !exists("g:phpqa_messdetector_cmd")
     let g:phpqa_messdetector_cmd='phpmd'
